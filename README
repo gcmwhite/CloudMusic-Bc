@@ -1,0 +1,7 @@
+the project of CloudMusic use NetEaseCloudMusic API
+version:2.0
+date:2018/09/10
+status:develop
+build:
+        qmake .
+        make -j4

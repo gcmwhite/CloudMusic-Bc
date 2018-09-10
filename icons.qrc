@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/cloud_music_logo.ico</file>
+        <file>icons/music.ico</file>
+        <file>icons/player_next.ico</file>
+        <file>icons/player_pause.ico</file>
+        <file>icons/player_play.ico</file>
+        <file>icons/player_previous.ico</file>
+        <file>icons/search.ico</file>
+        <file>icons/Search_48px_521372_easyicon.net.ico</file>
+        <file>icons/sound_off.ico</file>
+        <file>icons/sound_on.ico</file>
+        <file>icons/window_close.ico</file>
+        <file>icons/window_max_size.ico</file>
+        <file>icons/window_min_size.ico</file>
+        <file>icons/window-restore.ico</file>
+        <file>icons/dot.ico</file>
+        <file>icons/dot_red.ico</file>
+        <file>icons/point.ico</file>
+        <file>imgs/loading.gif</file>
+        <file>icons/settings.ico</file>
+        <file>icons/avatar_default.ico</file>
+        <file>icons/playlist.ico</file>
+        <file>icons/btn_next.ico</file>
+        <file>icons/btn_previous.ico</file>
+    </qresource>
+</RCC>

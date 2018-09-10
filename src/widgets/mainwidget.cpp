@@ -12,6 +12,7 @@ MainWidget::MainWidget(QWidget *parent)
 {
     aPlyer = new APlyer(this);
     initUI();
+    musicPlayListTable = new MusicPlayListTable(this);
     QTimer *netStartTimer = new QTimer(this);
     connect(netStartTimer,&QTimer::timeout,this,[=](){
         initAPI();
@@ -86,6 +87,27 @@ MainWidget::MainWidget(QWidget *parent)
         static bool flag = false;
         flag = !flag;
         aPlyer->setMuted(flag);
+        if (flag)
+        {
+            bottomWidget->muteBtn->setIcon(QIcon(":/icons/sound_off.ico"));
+        } else {
+            bottomWidget->muteBtn->setIcon(QIcon(":/icons/sound_on.ico"));
+        }
+    });
+
+    connect(musicPlayListTable,&MusicPlayListTable::countChanged,[=](int count){
+        bottomWidget->playlistBtn->setText(QString::number(count));
+    });
+
+    connect(bottomWidget->playlistBtn,&QPushButton::clicked,[=](){
+        static bool flag = false;
+        flag = !flag;
+        musicPlayListTable->setVisible(flag);
+    });
+
+    connect(aPlyer,&APlyer::indexChanged,musicPlayListTable,&MusicPlayListTable::selectRow);
+    connect(musicPlayListTable,&MusicPlayListTable::doubleClicked,this,[=](){
+        aPlyer->play__(musicPlayListTable->currentIndex().row());
     });
 }
 
@@ -102,8 +124,10 @@ MainWidget::~MainWidget()
 //主界面初始化
 void MainWidget::initUI()
 {
-    this->resize(1000,650);
+    this->resize(1000,710);
     this->setWindowFlags(Qt::FramelessWindowHint);        //界面无边框
+    this->setWindowTitle(tr("网易云音乐"));
+    this->setWindowIcon(QIcon(":/icons/cloud_music_logo.ico"));
 
     titleWidget = new TitleWidget;
     titleWidget->installEventFilter(this);
@@ -167,8 +191,8 @@ void MainWidget::initUI()
 void MainWidget::initAPI()
 {
     netEaseApi = new NetEaseApi(this);
-    currentMusicPlayListWidget = new CurrentMusicPlayListWidget;
-    stackWidgets->addWidget(currentMusicPlayListWidget);        //添加播放列表 :1
+    musicListWidget = new MusicListWidget;
+    stackWidgets->addWidget(musicListWidget);        //添加播放列表 :1
 
     topListWidget = new TopListWidget(netEaseApi->top_list());
     stackWidgets->addWidget(topListWidget);                     //添加榜单界面 :2
@@ -195,10 +219,15 @@ void MainWidget::initAPI()
     connect(topPlayListWidget,&TopPlayListWidget::top_playlist_id,this,&MainWidget::get_music_list);
 
     //播放选中列表歌曲
-    connect(currentMusicPlayListWidget,&CurrentMusicPlayListWidget::addList,[=](const int index,
-            const QString &listId,const QStringList &idList){
+    connect(musicListWidget,static_cast<void (MusicListWidget::*)(const int,const QString &,const QStringList &)>
+            (&MusicListWidget::addList),
+            [=](const int index,const QString &listId,const QStringList &idList){
         aPlyer->addPlayList__(index,listId,idList);
     });
+
+    //更新播放列表
+    connect(musicListWidget,static_cast<void (MusicListWidget::*)(const QVector<QStringList> &)>(&MusicListWidget::addList),
+            musicPlayListTable,static_cast<void (MusicPlayListTable::*)(const QVector<QStringList> &)>(&MusicPlayListTable::update_list));
 }
 
 bool MainWidget::eventFilter(QObject *obj, QEvent *e)
@@ -290,9 +319,9 @@ void MainWidget::setCurrentWidget(int index)
 
 void MainWidget::get_music_list(const QString &id)
 {
-    stackWidgets->setCurrentWidget(currentMusicPlayListWidget);
+    stackWidgets->setCurrentWidget(musicListWidget);
     QString json = netEaseApi->playlist_detail(id);
-    currentMusicPlayListWidget->playlist_detail(json);
+    musicListWidget->playlist_detail(json);
 }
 
 //无边框移动
@@ -314,4 +343,12 @@ void MainWidget::x11Move(const int x,const int y)
     XSendEvent(display, QX11Info::appRootWindow(QX11Info::appScreen()), False,
                SubstructureRedirectMask | SubstructureNotifyMask, &xev);
 }
+
+void MainWidget::resizeEvent(QResizeEvent *)
+{
+    int x = this->width() - musicPlayListTable->width();
+    int y = this->height() - musicPlayListTable->height() - bottomWidget->height();
+    musicPlayListTable->move(x,y);
+}
+
 

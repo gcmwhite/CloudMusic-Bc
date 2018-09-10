@@ -1,17 +1,18 @@
-#ifndef CURRENTMUSICPLAYLISTWIDGET_H
-#define CURRENTMUSICPLAYLISTWIDGET_H
+#ifndef MUSICLISTWIDGET_H
+#define MUSICLISTWIDGET_H
 
 #include <QWidget>
 #include <QTableView>
 #include <QVBoxLayout>
 #include <QStandardItemModel>
 #include <QLabel>
+#include <QVector>
 
-class CurrentMusicPlayListWidget : public QWidget
+class MusicListWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit CurrentMusicPlayListWidget(QWidget *parent = nullptr);
+    explicit MusicListWidget(QWidget *parent = nullptr);
     void playlist_detail(const QString &);
 
 private:
@@ -21,12 +22,14 @@ private:
     QLabel *listInformationLabel;
     QString listId;                         //歌单的id
     QStringList idList;                     //歌曲的id列表
+    QVector<QStringList> vector_list;              //歌曲
 
 
 signals:
     void addList(const int,const QString &,const QStringList &);
+    void addList(const QVector<QStringList> &);
 
 public slots:
 };
 
-#endif // CURRENTMUSICPLAYLISTWIDGET_H
+#endif // MusicListWidget_H

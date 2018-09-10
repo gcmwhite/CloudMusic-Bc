@@ -8,17 +8,19 @@
 #include <QEvent>
 #include <QRect>
 #include <QStackedLayout>
+#include <QResizeEvent>
 #include "titlewidget.h"
 #include "sidewidget.h"
 #include "bottomwidget.h"
 #include "toplistwidget.h"
 #include "../music_api/neteaseapi.h"
 #include "albumwidget.h"
-#include "currentmusicplaylistwidget.h"
+#include "musiclistwidget.h"
 #include "djradiowidget.h"
 #include "topplaylistwidget.h"
 #include "playerwidget.h"
 #include "../player/aplyer.h"
+#include "musicplaylisttable.h"
 
 
 class MainWidget : public QWidget
@@ -30,9 +32,10 @@ public:
     void initUI();
     void initAPI();
 
-protected:
+private:
     bool eventFilter(QObject *, QEvent *);
     void x11Move(int,int);
+    void resizeEvent(QResizeEvent *);
 
 private:
     //主界面
@@ -44,6 +47,7 @@ private:
     PlayerWidget *playerWidget;
     BottomWidget *bottomWidget;
     QStackedLayout *mainStackedLayout;
+    MusicPlayListTable *musicPlayListTable;
 
     //Player
     APlyer *aPlyer;
@@ -56,7 +60,7 @@ private:
     TopPlayListWidget *topPlayListWidget;                           //歌单
     DJRadioWidget *djRadioWidget;                                   //主播电台
     AlbumWidget *albumWidget;                                       //新碟上架
-    CurrentMusicPlayListWidget *currentMusicPlayListWidget;         //播放列表
+    MusicListWidget *musicListWidget;         //播放列表
 
 
     //主布局

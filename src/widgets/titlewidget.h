@@ -7,6 +7,7 @@
 #include <QLineEdit>
 #include <QMouseEvent>
 #include <QPoint>
+#include <QLabel>
 
 class TitleWidget : public QWidget
 {
@@ -23,6 +24,9 @@ protected:
     void mouseReleaseEvent(QMouseEvent *);
     */
     void mouseDoubleClickEvent(QMouseEvent *);
+
+public:
+//    QLabel *musicNameLabel;
 
 
 private:

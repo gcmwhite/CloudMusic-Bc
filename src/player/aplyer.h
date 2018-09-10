@@ -26,8 +26,10 @@ private:
     int index = 0;
 
 signals:
+    void indexChanged(const int);
 
 public slots:
+    void play__(const int);
 };
 
 #endif // APLYER_H

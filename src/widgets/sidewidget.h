@@ -4,6 +4,10 @@
 #include <QWidget>
 #include <QPaintEvent>
 #include <QVBoxLayout>
+#include <QPushButton>
+#include <QLabel>
+#include <QHBoxLayout>
+#include <QResizeEvent>
 
 class SideWidget : public QWidget
 {
@@ -12,8 +16,16 @@ public:
     explicit SideWidget(QWidget *parent = nullptr);
     ~SideWidget();
     void initUI();
-    void paintEvent(QPaintEvent *);
     void addWidget(QWidget *);
+
+private:
+    void paintEvent(QPaintEvent *);
+    void resizeEvent(QResizeEvent *);
+
+public:
+    QWidget *musicNameWidget;
+    QLabel *musicNameLabel;
+    QPushButton *musicInfoBtn;
 
 private:
     QVBoxLayout *mainLayout;

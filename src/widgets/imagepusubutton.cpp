@@ -7,19 +7,24 @@
 ImagePusuButton::ImagePusuButton(const QString &text, QWidget *parent)
     :QPushButton(parent)
 {
-    this->setMinimumSize(90,90);
+    this->setMinimumSize(90,110);
     this->setFlat(true);
 //    this->setCursor(Qt::PointingHandCursor);
     mainLayout = new QVBoxLayout(this);
     pixLabel = new QLabel;
     textLabel = new QLabel;
-    textLabel->setText(text);
     textLabel->setAlignment(Qt::AlignCenter);
     mainLayout->addWidget(pixLabel);
     mainLayout->addWidget(textLabel);
     mainLayout->setMargin(0);
     mainLayout->setSpacing(0);
 
+    QString temp = text;
+    if (temp.size() >= 11)
+    {
+        temp.insert(10,'\n');
+    }
+    textLabel->setText(temp);
 
 }
 

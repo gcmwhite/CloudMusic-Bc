@@ -14,9 +14,12 @@ APlyer::APlyer(QObject *parent)
         qDebug() << "status:" << this->mediaStatus();
         if (status == QMediaPlayer::EndOfMedia)
         {
-            qDebug() << "index:" << index;
             next__();
         }
+    });
+
+    connect(this,&APlyer::currentMediaChanged,this,[=](){
+        emit indexChanged(index);
     });
 }
 
@@ -47,6 +50,12 @@ void APlyer::play__()
     } else {
         this->play();
     }
+}
+
+void APlyer::play__(const int n)
+{
+    index = n;
+    play__(QString(playList.at(index)));
 }
 
 void APlyer::play__(const QString &id)

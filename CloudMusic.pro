@@ -10,9 +10,10 @@ SOURCES += \
     src/widgets/topplaylistwidget.cpp \
     src/widgets/djradiowidget.cpp \
     src/widgets/albumwidget.cpp \
-    src/widgets/currentmusicplaylistwidget.cpp \
     src/widgets/playerwidget.cpp \
-    src/player/aplyer.cpp
+    src/player/aplyer.cpp \
+    src/widgets/musiclistwidget.cpp \
+    src/widgets/musicplaylisttable.cpp
 
 QT              +=      widgets sql network  multimedia  x11extras
 
@@ -27,9 +28,10 @@ HEADERS += \
     src/widgets/topplaylistwidget.h \
     src/widgets/djradiowidget.h \
     src/widgets/albumwidget.h \
-    src/widgets/currentmusicplaylistwidget.h \
     src/widgets/playerwidget.h \
-    src/player/aplyer.h
+    src/player/aplyer.h \
+    src/widgets/musiclistwidget.h \
+    src/widgets/musicplaylisttable.h
 
 
 RESOURCES += \
@@ -40,4 +42,5 @@ CONFIG      += c++11 link_pkgconfig
 PKGCONFIG   += xcb
 LIBS        += -lX11 -lXext
 
+RC_ICONS    += /icons/cloud_music_logo.ico
 DISTFILES +=

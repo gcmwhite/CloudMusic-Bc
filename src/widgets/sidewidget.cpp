@@ -41,19 +41,6 @@ void SideWidget::initUI()
     addWidget(albumBtn);                    //:5
     addWidget(myMusicLabel);
 
-//    musicNameWidget = new QWidget(this);
-//    musicNameWidget->setFixedWidth(this->width());
-//    musicNameWidget->setFixedHeight(85);
-//    musicNameLabel = new QLabel;
-//    musicInfoBtn = new QPushButton(this);
-//    musicInfoBtn->setFixedHeight(60);
-//    musicInfoBtn->setFixedWidth(this->width());
-//    QHBoxLayout *hBoxLayout = new QHBoxLayout(musicNameWidget);
-//    hBoxLayout->addWidget(musicInfoBtn);
-//    hBoxLayout->addWidget(musicNameLabel);
-//    pal.setColor(QPalette::Background,Qt::red);
-//    musicNameWidget->setPalette(pal);
-//    musicInfoBtn->move(0,this->height());
 }
 
 void SideWidget::paintEvent(QPaintEvent *)
@@ -93,9 +80,4 @@ void SideWidget::addWidget(QWidget *w)
         connect(btn,&QPushButton::clicked,this,&SideWidget::on_btn_clicked);
     }
     mainLayout->addWidget(w);
-}
-
-void SideWidget::resizeEvent(QResizeEvent *)
-{
-//    musicInfoBtn->move(0,this->height() - musicInfoBtn->height());
 }

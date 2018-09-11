@@ -19,6 +19,7 @@ MainWidget::MainWidget(QWidget *parent)
     aPlyer = new APlyer(this);
     initUI();
     musicPlayListTable = new MusicPlayListTable(this);
+    musicNameWidget = new MusicNameWidget(this);
     QTimer *netStartTimer = new QTimer(this);
     connect(netStartTimer,&QTimer::timeout,this,[=](){
         initAPI();
@@ -70,11 +71,14 @@ MainWidget::MainWidget(QWidget *parent)
     connect(aPlyer,&APlyer::stateChanged,this,[=](QMediaPlayer::State newState){
         switch (newState) {
         case QMediaPlayer::PlayingState:
+            musicNameWidget->setVisible(true);
             bottomWidget->playBtn->setIcon(QIcon(":/icons/player_pause.ico"));
             break;
         case QMediaPlayer::PausedState:
+            musicNameWidget->setVisible(true);
             bottomWidget->playBtn->setIcon(QIcon(":/icons/player_play.ico"));
         case QMediaPlayer::StoppedState:
+            musicNameWidget->setVisible(false);
             bottomWidget->playBtn->setIcon(QIcon(":/icons/player_play.ico"));
             bottomWidget->timeSlider->setValue(0);
             bottomWidget->currentTimeLable->setText("00:00");
@@ -111,7 +115,13 @@ MainWidget::MainWidget(QWidget *parent)
         musicPlayListTable->setVisible(flag);
     });
 
-    connect(aPlyer,&APlyer::indexChanged,musicPlayListTable,&MusicPlayListTable::selectRow);
+    connect(aPlyer,&APlyer::indexChanged,this,[=](const int index){
+        musicPlayListTable->selectRow(index);
+        musicNameWidget->setImg(QString(PlayList::list.at(index).at(4)));
+        QString name = PlayList::list.at(index).at(1) + "\n" + PlayList::list.at(index).at(2);
+        musicNameWidget->nameLabel->setText(name);
+
+    });
     connect(musicPlayListTable,&MusicPlayListTable::doubleClicked,this,[=](){
         aPlyer->play__(musicPlayListTable->currentIndex().row());
     });
@@ -365,9 +375,13 @@ void MainWidget::x11Move(const int x,const int y)
 
 void MainWidget::resizeEvent(QResizeEvent *)
 {
-    int x = this->width() - musicPlayListTable->width();
-    int y = this->height() - musicPlayListTable->height() - bottomWidget->height();
-    musicPlayListTable->move(x,y);
+    int x1 = this->width() - musicPlayListTable->width();
+    int y1 = this->height() - musicPlayListTable->height() - bottomWidget->height();
+    musicPlayListTable->move(x1,y1);
+
+    int y2 = this->height() - musicNameWidget->height() - bottomWidget->height();
+    musicNameWidget->move(0,y2);
+    musicNameWidget->setFixedWidth(sideWidget->width());
 }
 
 

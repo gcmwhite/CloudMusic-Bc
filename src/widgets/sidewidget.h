@@ -7,7 +7,6 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QHBoxLayout>
-#include <QResizeEvent>
 
 class SideWidget : public QWidget
 {
@@ -20,12 +19,7 @@ public:
 
 private:
     void paintEvent(QPaintEvent *);
-    void resizeEvent(QResizeEvent *);
 
-public:
-    QWidget *musicNameWidget;
-    QLabel *musicNameLabel;
-    QPushButton *musicInfoBtn;
 
 private:
     QVBoxLayout *mainLayout;

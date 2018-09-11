@@ -14,7 +14,8 @@ SOURCES += \
     src/player/aplyer.cpp \
     src/widgets/musiclistwidget.cpp \
     src/widgets/musicplaylisttable.cpp \
-    src/player/playlist.cpp
+    src/player/playlist.cpp \
+    src/widgets/musicnamewidget.cpp
 
 QT              +=      widgets sql network  multimedia  x11extras
 
@@ -33,7 +34,8 @@ HEADERS += \
     src/player/aplyer.h \
     src/widgets/musiclistwidget.h \
     src/widgets/musicplaylisttable.h \
-    src/player/playlist.h
+    src/player/playlist.h \
+    src/widgets/musicnamewidget.h
 
 
 RESOURCES += \

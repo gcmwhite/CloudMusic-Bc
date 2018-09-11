@@ -22,6 +22,7 @@
 #include "../player/aplyer.h"
 #include "musicplaylisttable.h"
 #include "../player/playlist.h"
+#include "musicnamewidget.h"
 
 
 class MainWidget : public QWidget
@@ -49,6 +50,7 @@ private:
     BottomWidget *bottomWidget;
     QStackedLayout *mainStackedLayout;
     MusicPlayListTable *musicPlayListTable;
+    MusicNameWidget *musicNameWidget;
 
     //Player
     APlyer *aPlyer;

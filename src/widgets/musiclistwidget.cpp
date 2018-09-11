@@ -67,7 +67,7 @@ void MusicListWidget::playlist_detail(const QString &json)
                                 break;
                             artists_name.append("/");
                         }
-                        QString picUrl = tracks.at(i).toObject()["album"].toObject()["artist"].toObject()["picUrl"].toString();
+                        QString picUrl = tracks.at(i).toObject()["album"].toObject()["picUrl"].toString();
                         QString time = QString("%1分:%2秒").arg(duration/60).arg(duration%60);
                         head->setItem(i,0,new QStandardItem(name));
                         head->setItem(i,1,new QStandardItem(artists_name));

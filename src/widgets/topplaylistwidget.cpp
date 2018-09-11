@@ -1,5 +1,6 @@
 #include "topplaylistwidget.h"
-#include "imagepusubutton.h"
+//#include "imagepusubutton.h"
+#include "gridwidget.h"
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QObjectList>
@@ -18,7 +19,6 @@ TopPlayListWidget::TopPlayListWidget(QWidget *parent)
     const QSize ICONSIZE(20,20);
 
     mainLayout = new QVBoxLayout(this);
-    imgBtnLayout = new QGridLayout;
 
     QPushButton *nextBtn = new QPushButton;
     nextBtn->setIcon(QIcon(":/icons/btn_next.ico"));
@@ -45,6 +45,9 @@ TopPlayListWidget::TopPlayListWidget(QWidget *parent)
     btnLayout->addWidget(nextBtn);
     btnLayout->addStretch();
 
+    imgBtnLayout = new QVBoxLayout;
+    imgBtnLayout->setMargin(0);
+    imgBtnLayout->setSpacing(0);
     mainLayout->addLayout(imgBtnLayout);
     mainLayout->addLayout(btnLayout);
 //    mainLayout->setAlignment(Qt::AlignBottom);
@@ -93,6 +96,7 @@ TopPlayListWidget::TopPlayListWidget(QWidget *parent)
 
 void TopPlayListWidget::list(const QString &json)
 {
+    QVector<QStringList> vec_list;
     //删除控件
     while (imgBtnLayout->count())
     {
@@ -121,6 +125,7 @@ void TopPlayListWidget::list(const QString &json)
                     total_page += 1;
                 }
                 pageLabel_2->setText(tr("页,共 %1 页").arg(total_page));
+                vec_list.reserve(size);
                 for (int i = 0;i < size;i++)
                 {
                     QJsonObject object = playlists.at(i).toObject();
@@ -129,28 +134,33 @@ void TopPlayListWidget::list(const QString &json)
                     QJsonValue coverImgUrl = object["coverImgUrl"];
                     QJsonValue description = object["description"];
 
-                    ImagePusuButton *btn = new ImagePusuButton(name.toString());
-                    btn->setToolTip(description.toString());
-                    connect(btn,&ImagePusuButton::clicked,this,[=](){
-                        QString idstr = QString::number(id.toDouble(),'s',0);
-                        emit top_playlist_id(idstr);
-                    });
-                    imgBtnLayout->addWidget(btn,i/6,i%6);
+                    QStringList list;
+                    list << QString::number(id.toDouble(),'s',0) << name.toString() << coverImgUrl.toString() << description.toString();
+                    vec_list.append(list);
+//                    ImagePusuButton *btn = new ImagePusuButton(name.toString());
+//                    btn->setToolTip(description.toString());
+//                    connect(btn,&ImagePusuButton::clicked,this,[=](){
+//                        QString idstr = QString::number(id.toDouble(),'s',0);
+//                        emit top_playlist_id(idstr);
+//                    });
+//                    imgBtnLayout->addWidget(btn,i/6,i%6);
 
-                    QNetworkAccessManager *manaer = new QNetworkAccessManager(this);
-                    QNetworkRequest request(QUrl(coverImgUrl.toString()));
-                    connect(manaer,&QNetworkAccessManager::finished,[=](QNetworkReply *reply){
-                        QPixmap pix;
-                        pix.loadFromData(reply->readAll());
-                        btn->setImg(pix);
-                        manaer->disconnect();
-                        reply->deleteLater();
-                        manaer->deleteLater();
-                    });
-                    manaer->get(request);
+//                    QNetworkAccessManager *manaer = new QNetworkAccessManager(this);
+//                    QNetworkRequest request(QUrl(coverImgUrl.toString()));
+//                    connect(manaer,&QNetworkAccessManager::finished,[=](QNetworkReply *reply){
+//                        QPixmap pix;
+//                        pix.loadFromData(reply->readAll());
+//                        btn->setImg(pix);
+//                        manaer->disconnect();
+//                        reply->deleteLater();
+//                        manaer->deleteLater();
+//                    });
+//                    manaer->get(request);
                 }
             }
         }
     }
+    gridWidget = new GridWidget(vec_list);
+    imgBtnLayout->addWidget(gridWidget);
 }
 

@@ -1,4 +1,5 @@
 #include "mainwidget.h"
+#include "gridwidget.h"
 #include <QDebug>
 #include <QTimer>
 #include <QMovie>
@@ -231,10 +232,10 @@ void MainWidget::initAPI()
     stackWidgets->addWidget(albumWidget);                       //添加新碟上架 :5
 
     //榜单歌曲列表
-    connect(topListWidget,&TopListWidget::top_list_id,this,&MainWidget::get_music_list);
+    connect(topListWidget->gridWidget,&GridWidget::top_list_id,this,&MainWidget::get_music_list);
 
     //歌单歌曲列表
-    connect(topPlayListWidget,&TopPlayListWidget::top_playlist_id,this,&MainWidget::get_music_list);
+    connect(topPlayListWidget->gridWidget,&GridWidget::top_list_id,this,&MainWidget::get_music_list);
 
     //切换音乐列表
     connect(musicListWidget,&MusicListWidget::listChanged,this,[=](const QVector<QStringList> &temp){

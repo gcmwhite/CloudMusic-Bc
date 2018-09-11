@@ -17,13 +17,13 @@ NetEaseApi::NetEaseApi(QObject *parent)
 {
     manager = new QNetworkAccessManager(this) ;
 //    request.setRawHeader("Accept-Encoding","gzip, deflate, br");
-    request.setRawHeader("Accept-Language","zh-CN,zh;q=0.9");
-    request.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
-    request.setRawHeader("Referer","http://music.163.com/");
-    request.setRawHeader("Origin","http://music.163.com");
-    request.setRawHeader("Host","music.163.com");
-    request.setRawHeader("Connection","keep-alive");
-    request.setHeader(QNetworkRequest::UserAgentHeader,"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.84 Safari/537.36");
+//    request.setRawHeader("Accept-Language","zh-CN,zh;q=0.9");
+//    request.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
+//    request.setRawHeader("Referer","http://music.163.com/");
+//    request.setRawHeader("Origin","http://music.163.com");
+//    request.setRawHeader("Host","music.163.com");
+//    request.setRawHeader("Connection","keep-alive");
+//    request.setHeader(QNetworkRequest::UserAgentHeader,"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.84 Safari/537.36");
 
 }
 

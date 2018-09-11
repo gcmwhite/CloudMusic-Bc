@@ -3,9 +3,9 @@
 
 #include <QWidget>
 #include <QVBoxLayout>
-#include <QGridLayout>
 #include <QLabel>
 #include <QLineEdit>
+#include "gridwidget.h"
 
 class TopPlayListWidget : public QWidget
 {
@@ -16,18 +16,20 @@ public:
 
 private:
     QVBoxLayout *mainLayout;
-    QGridLayout *imgBtnLayout;
-
+    QVBoxLayout *imgBtnLayout;
     QLabel *pageLabel_1;
     QLabel *pageLabel_2;
     QLineEdit *pageLineEdit;
+
+public:
+    GridWidget *gridWidget;
 
     int index = 1;
     int total_page;
 
 signals:
     void switch_page(int);
-    void top_playlist_id(const QString &);
+//    void top_playlist_id(const QString &);
 
 public slots:
 

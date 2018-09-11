@@ -2,6 +2,7 @@
 #define TOPLISTWIDGET_H
 
 #include <QWidget>
+#include "gridwidget.h"
 
 class TopListWidget : public QWidget
 {
@@ -9,9 +10,11 @@ class TopListWidget : public QWidget
 public:
     explicit TopListWidget(const QString &,QWidget *parent = nullptr);
 
+public:
+    GridWidget *gridWidget;
 
 signals:
-    void top_list_id(const QString &);
+//    void top_list_id(const QString &);
 
 public slots:
 };

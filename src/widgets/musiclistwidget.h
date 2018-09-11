@@ -15,19 +15,18 @@ public:
     explicit MusicListWidget(QWidget *parent = nullptr);
     void playlist_detail(const QString &);
 
-private:
+public:
     QTableView *playlist_detail_table;
+
+private:
     QVBoxLayout *mainLayout;
     QStandardItemModel *head;
     QLabel *listInformationLabel;
-    QString listId;                         //歌单的id
-    QStringList idList;                     //歌曲的id列表
     QVector<QStringList> vector_list;              //歌曲
 
 
 signals:
-    void addList(const int,const QString &,const QStringList &);
-    void addList(const QVector<QStringList> &);
+    void listChanged(const QVector<QStringList> &);
 
 public slots:
 };

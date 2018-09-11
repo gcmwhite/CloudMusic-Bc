@@ -1,5 +1,5 @@
 #include "musiclistwidget.h"
-
+#include "../player/playlist.h"
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -28,20 +28,13 @@ MusicListWidget::MusicListWidget(QWidget *parent) : QWidget(parent)
 
     //添加播放表
     connect(playlist_detail_table,&QTableView::doubleClicked,this,[=](){
-        int index = playlist_detail_table->currentIndex().row();
-//        qDebug() << "index:" << index << "listId:" << listId << "idList:" << idList;
-        emit addList(index,listId,idList);
-        emit addList(vector_list);
-        listId.clear();
-        idList.clear();
+        emit listChanged(vector_list);
         vector_list.clear();
     });
 }
 
 void MusicListWidget::playlist_detail(const QString &json)
 {
-    listId.clear();
-    idList.clear();
     head->removeRows(0,head->rowCount());
     QJsonParseError jsonError;
     QJsonDocument document = QJsonDocument::fromJson(json.toUtf8(),&jsonError);
@@ -54,7 +47,7 @@ void MusicListWidget::playlist_detail(const QString &json)
             {
                 if (object["code"].toInt() == 200)
                 {                    
-                    listId = QString::number(object["result"].toObject()["id"].toDouble(),'s',0);
+//                    QString listId = QString::number(object["result"].toObject()["id"].toDouble(),'s',0);
                     QJsonArray tracks = object["result"].toObject()["tracks"].toArray();
                     int tracks_size = tracks.size();
                     listInformationLabel->setText(tr("<font size='5'>%1</font>&nbsp;共%2首音乐").arg(object["result"].toObject()["name"].toString()).arg(tracks_size));
@@ -62,7 +55,7 @@ void MusicListWidget::playlist_detail(const QString &json)
                     for (int i = 0;i < tracks_size;i++)
                     {
                         QJsonValue id = tracks.at(i).toObject()["id"];
-                        idList << QString::number(id.toDouble(),'s',0);
+                        QString idList = QString::number(id.toDouble(),'s',0);
                         QString name = tracks.at(i).toObject()["name"].toString();
                         int duration = tracks.at(i).toObject()["duration"].toInt()/1000;
                         QJsonArray artists = tracks.at(i).toObject()["artists"].toArray();
@@ -74,12 +67,13 @@ void MusicListWidget::playlist_detail(const QString &json)
                                 break;
                             artists_name.append("/");
                         }
+                        QString picUrl = tracks.at(i).toObject()["album"].toObject()["artist"].toObject()["picUrl"].toString();
                         QString time = QString("%1分:%2秒").arg(duration/60).arg(duration%60);
                         head->setItem(i,0,new QStandardItem(name));
                         head->setItem(i,1,new QStandardItem(artists_name));
                         head->setItem(i,2,new QStandardItem(time));
                         QStringList _list;
-                        _list << name << artists_name << time;
+                        _list << idList << name << artists_name << time << picUrl;;
                         vector_list.append(_list);
                     }
                 }

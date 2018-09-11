@@ -6,6 +6,12 @@
 #include <X11/Xlib.h>
 #include <QX11Info>
 #include <QScreen>
+#include <QVector>
+
+//定义播放列表
+QVector<QStringList> PlayList::list;
+//定义更新列表
+QVector<QStringList> PlayList::update_list;
 
 MainWidget::MainWidget(QWidget *parent)
     : QWidget(parent)
@@ -190,6 +196,8 @@ void MainWidget::initUI()
 //网络和stackwidget
 void MainWidget::initAPI()
 {
+    playList = new PlayList(this);
+
     netEaseApi = new NetEaseApi(this);
     musicListWidget = new MusicListWidget;
     stackWidgets->addWidget(musicListWidget);        //添加播放列表 :1
@@ -218,16 +226,27 @@ void MainWidget::initAPI()
     //歌单歌曲列表
     connect(topPlayListWidget,&TopPlayListWidget::top_playlist_id,this,&MainWidget::get_music_list);
 
-    //播放选中列表歌曲
-    connect(musicListWidget,static_cast<void (MusicListWidget::*)(const int,const QString &,const QStringList &)>
-            (&MusicListWidget::addList),
-            [=](const int index,const QString &listId,const QStringList &idList){
-        aPlyer->addPlayList__(index,listId,idList);
+    //切换音乐列表
+    connect(musicListWidget,&MusicListWidget::listChanged,this,[=](const QVector<QStringList> &temp){
+        playList->addList(temp);
+        aPlyer->play__(musicListWidget->playlist_detail_table->currentIndex().row());
     });
 
-    //更新播放列表
-    connect(musicListWidget,static_cast<void (MusicListWidget::*)(const QVector<QStringList> &)>(&MusicListWidget::addList),
-            musicPlayListTable,static_cast<void (MusicPlayListTable::*)(const QVector<QStringList> &)>(&MusicPlayListTable::update_list));
+    //更新音乐列表
+    connect(playList,static_cast<void (PlayList::*)(PlayList::updateStatus)>(&PlayList::updateList),this,[=](const PlayList::updateStatus &status){
+        switch (status) {
+        case PlayList::ChangedList:
+            musicPlayListTable->changedList(PlayList::list);
+            break;
+        case PlayList::UpdateList:
+            musicPlayListTable->update_list(PlayList::update_list);
+            PlayList::update_list.clear();
+            break;
+        case PlayList::ClearList:
+            musicPlayListTable->clearList();
+            break;
+        }
+    });
 }
 
 bool MainWidget::eventFilter(QObject *obj, QEvent *e)

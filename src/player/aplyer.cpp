@@ -1,4 +1,5 @@
 #include "aplyer.h"
+#include "playlist.h"
 #include <QCryptographicHash>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -28,16 +29,16 @@ void APlyer::previous__()
 {
     if (index >= 1)
     {
-        play__(QString(playList.at(--index)));
+        play__(QString(PlayList::list.at(--index).at(0)));
     }
 }
 
 //下一曲
 void APlyer::next__()
 {
-    if (index < playList.size() - 1)
+    if (index < PlayList::list.size() - 1)
     {
-        play__(QString(playList.at(++index)));
+        play__(QString(PlayList::list.at(++index).at(0)));
     }
 }
 
@@ -55,7 +56,7 @@ void APlyer::play__()
 void APlyer::play__(const int n)
 {
     index = n;
-    play__(QString(playList.at(index)));
+    play__(QString(PlayList::list.at(index).at(0)));
 }
 
 void APlyer::play__(const QString &id)
@@ -72,35 +73,6 @@ void APlyer::play__(const QString &id)
     qDebug() << "play:" << url;
 }
 
-void APlyer::play__(const QStringList &list)
-{
-    play__(QString(list.at(index)));
-}
-
-//添加到播放列表
-void APlyer::addPlayList__(const int currentIndex, const QString &id, const QStringList &list)
-{
-    qDebug() << "index:" << currentIndex << "listId:" << id << "idList:" << list;
-    if (listId != id)
-    {
-        listId.clear();
-        listId = id;
-        playList.clear();
-        playList = list;
-    }
-    index = currentIndex;
-    play__(playList);
-}
-
-void APlyer::addPlayList__(const QString &id)
-{
-    playList.append(id);
-}
-
-void APlyer::addPlayList__(const QStringList &list)
-{
-    playList = playList + list;
-}
 
 //获取音乐播放地址
 QString APlyer::_get_music_url_(const QString &id)

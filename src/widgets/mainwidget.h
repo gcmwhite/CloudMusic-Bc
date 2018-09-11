@@ -21,6 +21,7 @@
 #include "playerwidget.h"
 #include "../player/aplyer.h"
 #include "musicplaylisttable.h"
+#include "../player/playlist.h"
 
 
 class MainWidget : public QWidget
@@ -51,6 +52,7 @@ private:
 
     //Player
     APlyer *aPlyer;
+    PlayList *playList;
 
     //API
     NetEaseApi *netEaseApi;

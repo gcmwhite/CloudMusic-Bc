@@ -18,8 +18,10 @@ signals:
     void countChanged(const int);
 
 public slots:
+    void changedList(const QVector<QStringList> &);
     void update_list(const QVector<QStringList> &);
-    void update_list(const QStringList &);
+    void clearList();
+
 };
 
 #endif // MUSICPLAYLISTTABLE_H
